@@ -11,17 +11,16 @@
 
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BOARD)  #BOARD is using the numbers of GPIO
-pinList = [17, 27, 15, 16, 13, 19, 26, 22]  #used for initializing the relays
-sample_1 = 13   #relay connected to sample container 1
-sample_2 = 19   #relay connected to sample container 2
-sample_3 = 26   #relay connected to sample container 3
-sample_4 = 22   #relay connected to sample container 4
-flush = 17      #relay connected to the solonoid for flushing the system
-pump = 15       #relay connected to the peristaltic pump
+GPIO.setmode(GPIO.BOARD)                            # GPIO.BOARD is using the numbers of GPIO
+pinList = [17, 27, 15, 16, 13, 19, 26, 22]          # Used for initializing the relays below
 
 # set all pins to high so the relays are closed, because they are active low relays
-for i in pinList:
-    GPIO.setup(i, GPIO.setup, GPIO.OUT)     #setting the GPIO pins as outputs
-    GPIO.output(i, HIGH)                    #iterate through all pins and set to high for active low relays
+GPIO.setup(pinList, GPIO.OUT, initial=GPIO.HIGH)     # Setting the GPIO pins as outputs and high
 
+sample_1_pin = 13                                    # Relay connected to sample container 1
+sample_2_pin = 19                                    # Relay connected to sample container 2
+sample_3_pin = 26                                    # Relay connected to sample container 3
+sample_4_pin = 22                                    # Relay connected to sample container 4
+flush_pin = 17                                       # Relay connected to the solonoid for flushing the system
+pump_pin = 15                                        # Relay connected to the peristaltic pump
+pump_status = GPIO.input(pump_pin)                   # Used to check if the pump is on or off
