@@ -1,5 +1,5 @@
 ## Nick Purcell - 2019
-# GAUSS-R ASV Team
+# GAUSS USV Team
 # Python Library for Titan X1 GPS
 # Based on Arduino code for GPS module
 # https://github.com/sparkfun/SparkFun_I2C_GPS_Arduino_Library/blob/master/src/SparkFun_I2C_GPS_Arduino$# https://github.com/sparkfun/SparkFun_I2C_GPS_Arduino_Library/blob/master/src/SparkFun_I2C_GPS_Arduino$
