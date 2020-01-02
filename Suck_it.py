@@ -3,10 +3,11 @@
 # Author: James Stevens
 
 import Relay
-import timer
+import time
 
+in_position = 1 #this needs to come from another header
 flushed_flag = 0  # Set to 1 after flush. Flush before each sample.
-water_flow = needs to be from ADC <---------------------------------------------------------------------------------------- Still needs to be written
+water_flow = 2 #needs to be from ADC <---------------------------------------------------------------------------------------- Still needs to be written
 
 def suck_it(sample_counter):
     finished_pump = 0  # Set to 1 only when done, in case interrupt before finish filling sample

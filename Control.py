@@ -6,7 +6,9 @@ import Relay          # Import the module for the relays
 import LIDAR            # Import the module for the LIDAR
 import Suck_it as Suck                 # Import Suck it module
 import Motor
+import RPi.GPIO as GPIO
 
+GPIO.setwarnings(False)
 sample_counter = 0  # Keeps track of the samples taken. Update after each one is taken
 
 # System startup - Do checks and initialize
