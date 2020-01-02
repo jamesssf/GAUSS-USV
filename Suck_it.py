@@ -2,7 +2,7 @@
 # 12/22/2019
 # Author: James Stevens
 
-import Relay_module as Relay
+import Relay
 import timer
 
 flushed_flag = 0  # Set to 1 after flush. Flush before each sample.
