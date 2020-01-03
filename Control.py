@@ -12,8 +12,8 @@ GPIO.setwarnings(False)
 sample_counter = 0  # Keeps track of the samples taken. Update after each one is taken
 
 # System startup - Do checks and initialize
-Relay.relay_init()
-
-Suck.suck_it(sample_counter)
-sample_counter += sample_counter
+while sample_counter < 4:  #for testing
+    Suck.suck_it(sample_counter)
+    print('done suckin number #' + str(sample_counter) + ' Sir!') #for testing purposes
+    sample_counter += 1
 
