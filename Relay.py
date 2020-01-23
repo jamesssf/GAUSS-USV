@@ -4,19 +4,19 @@
 # There are 8 relays
 # Relay 1 -> GPIO 17 - Solenoid 4
 # Relay 2 -> GPIO 27 - 
-# Relay 3 -> GPIO 5 - Pump
-# Relay 4 -> GPIO 6 - solenoid 1
-# Relay 5 -> GPIO 13 - solenoid 2
+# Relay 3 -> GPIO 5 - Solenoid 1
+# Relay 4 -> GPIO 6 - Pump Solenoid
+# Relay 5 -> GPIO 13 - Flush Solenoid
 # Relay 6 -> GPIO 19 - Solenoid 3
-# Relay 7 -> GPIO 26 - Flush
-# Relay 8 -> GPIO 22 - 
+# Relay 7 -> GPIO 26 - 
+# Relay 8 -> GPIO 22 - Solenoid 2
 
 import RPi.GPIO as GPIO  # Import GPIO module for Raspberry Pi
 
-flushPin = 26  # Relay connected to the solonoid for flushing the system
+flushPin = 22  # Relay connected to the solonoid for flushing the system
 pumpPin = 5  # Relay connected to the peristaltic pump
 pinList = [5, 6, 13, 17, 19, 22, 26, 27]  # Used for initializing the relays below
-
+sample_pins = [6, 13, 19, 17]  # Sent to Suck_it for iterating through samples
 
 def relay_init():  # set all pins to high so the relays are closed, because they are active low relays
     GPIO.setmode(GPIO.BCM)  # GPIO.BCM is using the numbers of GPIO
@@ -25,12 +25,14 @@ def relay_init():  # set all pins to high so the relays are closed, because they
 
 
 def get_pin(sample_counter):
-    sample_pins = [6, 13, 19, 17]  # Sent to Suck_it for iterating through samples
     return sample_pins[sample_counter]  # Return the pin of the number of sample we are on
 
 
 def all_relay_off():
     GPIO.output(pinList, GPIO.HIGH)  # Setting the GPIO pins as high
+
+def all_relay_on():
+    GPIO.output(pinList, GPIO.LOW)
 
 
 def pump_on():

@@ -1,0 +1,67 @@
+# I2C Module or notes
+# 1/2/2020
+# Author: James Stevens
+
+#I2C addresses
+# Compass 68
+# GPS 10
+# ADC 48
+# PWM 40 & 70
+from __future__ import division
+from smbus2 import SMBus
+import time
+import Adafruit_PCA9685 as ada
+
+#pwm = ada.PCA9685(address=0x40, busnum=1)
+#pwm.set_pwm_freq(50)
+#servo_min = 0
+#servo_max = 150
+#channel = 0
+
+#def set_servo_pulse(channel, pulse):
+#    pulse_length = 1000000    # 1,000,000 us per second
+#    pulse_length //= 50       # 50 Hz
+#    print('{0}us per period'.format(pulse_length))
+#    pulse_length //= 4096     # 12 bits of resolution
+#    print('{0}us per bit'.format(pulse_length))
+#    pulse *= 1000
+#    pulse //= pulse_length
+#    pwm.set_pwm(channel, 0, pulse)
+
+#print('Moving servo on channel 0, press Ctrl-C to quit...')
+#while True:
+#    # Move servo on channel O between extremes.
+#    pwm.set_pwm(channel, 0, servo_min)
+#    time.sleep(1)
+#    pwm.set_pwm(channel, 0, servo_max)
+#    time.sleep(1)
+
+bus = SMBus(1)
+address = 0x70
+
+#xlAxis = 0x03
+#xhAxis = 0x04
+#ylAxis = 0x05
+#ylAxis = 0x06
+#zlAxis = 0x07
+#zhAxis = 0x08
+
+
+pwm.output_enable()
+pwm.set_pwm(7,0,1500)
+pwm.s
+
+#while True:
+ #   val = bus.write_byte_data(0x70, 1, 16)
+  #  print('val: ' + str(val))
+   # bus.close
+    #time.sleep(3)
+
+#pwm = PWM(0x40)
+
+pwm.set_pwm_freq(60)
+pwm.set_pwm(1,0,360)
+pwm.set_pwm(4,0,1200)
+pwm.set_pwm(5,0,1500)
+pwm.set_pwm(8,0,1900)
+time.sleep(8)
