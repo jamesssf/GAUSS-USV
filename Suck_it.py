@@ -5,7 +5,7 @@
 import Relay
 import time
 
-in_position = 1  # this needs to come from another header
+in_position = 1  # this needs to come from another header <-----------------------------------------------------------------------
 water_flow = .5  # needs to be from ADC <---------------------------------------------------------------------------------------- Still needs to be written
 flushed_flag = 0  # Set to 1 after flush. Flush before each sample.
 
