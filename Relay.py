@@ -2,18 +2,18 @@
 # 12/22/2019
 # Author: James Stevens
 # There are 8 relays
-# Relay 1 -> GPIO 17 - Flush Solenoid
+# Relay 1 -> GPIO 17 - Solenoid 4
 # Relay 2 -> GPIO 27 - 
-# Relay 3 -> GPIO 22 - Solenoid 1
-# Relay 4 -> GPIO 5 - Pump Solenoid
-# Relay 5 -> GPIO 6 - 
-# Relay 6 -> GPIO 13 - Solenoid 4
-# Relay 7 -> GPIO 19 - Solenoid 3
-# Relay 8 -> GPIO 26 - Solenoid 2
+# Relay 3 -> GPIO 5 - Pump
+# Relay 4 -> GPIO 6 - solenoid 1
+# Relay 5 -> GPIO 13 - solenoid 2
+# Relay 6 -> GPIO 19 - Solenoid 3
+# Relay 7 -> GPIO 26 - Flush
+# Relay 8 -> GPIO 22 - 
 
 import RPi.GPIO as GPIO  # Import GPIO module for Raspberry Pi
 
-flushPin = 17  # Relay connected to the solonoid for flushing the system
+flushPin = 26  # Relay connected to the solonoid for flushing the system
 pumpPin = 5  # Relay connected to the peristaltic pump
 pinList = [5, 6, 13, 17, 19, 22, 26, 27]  # Used for initializing the relays below
 
@@ -25,7 +25,7 @@ def relay_init():  # set all pins to high so the relays are closed, because they
 
 
 def get_pin(sample_counter):
-    sample_pins = [22, 26, 19, 13]  # Sent to Suck_it for iterating through samples
+    sample_pins = [6, 13, 19, 17]  # Sent to Suck_it for iterating through samples
     return sample_pins[sample_counter]  # Return the pin of the number of sample we are on
 
 
