@@ -9,9 +9,10 @@ import Suck_it as Suck  # Import Suck it module
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setwarnings(False)
-sample_counter = 0  # Keeps track of the samples taken. Update after each one is taken
-Relay.relay_init()
+def sample_test():
+	GPIO.setwarnings(False)
+	sample_counter = 0  # Keeps track of the samples taken. Update after each one is taken
+	Relay.relay_init()
 #Relay.all_relay_on()
 
 #time.sleep(2)
@@ -23,8 +24,8 @@ Relay.relay_init()
 #Relay.pump_on()
 #time.sleep(3)
 #Relay.all_relay_off()
-while sample_counter < 4:  # for testing
-    Suck.suck_it(sample_counter)
-    print('done suckin number #' + str(sample_counter) + ' Sir!')  # for testing purposes
-    sample_counter += 1
+	while sample_counter < 4:  # for testing
+    		Suck.suck_it(sample_counter)
+    		print('done suckin number #' + str(sample_counter) + ' Sir!')  # for testing purposes
+    		sample_counter += 1
 

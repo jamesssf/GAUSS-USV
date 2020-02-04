@@ -1,99 +1,122 @@
-# Motor module for the GAUSS USV
-# 12/22/2019
-# Author: James Stevens
-
-#1900uS = Full speed
-#1500uS = stopped
-#1100uS = Full speed reverse
-
-#400uS between stop full speed and reverse
-
-import RPi.GPIO as GPIO
+import Adafruit_PCA9685
 import time
-import math
-#import Sunfounder_PWM_Servo_Driver
-from ServoPi import PWM
-#pwm_driver = Sunfounder_PWM_Servo_Driver.PWM()
-pwm_driver = PWM(0x40)
-pwm_speeds = [1500,1500,1500,1500,1500,1500,1500,1500,1500]
+from time import sleep
 
-pwm_freq = 0
+pwm = Adafruit_PCA9685.PCA9685()
 
-u_period = 0
+# Don't change this!!
+pwm_freq = 60
+pwm.set_pwm_freq(60)
 
-def motor_init(freq = 100):
+m_speed = [0, 0, 0]
+
+# Convert microseconds to duty cycle
+def u_to_duty(u_secs):
     global pwm_freq
-    global pwm_driver
-    global u_period
-    # Set PWM to 400Hz
-    pwm_driver.set_pwm_freq(freq, 5.5)
-    pwm_freq = freq
-    u_period = 1000000/freq
-    for x in range(1,7):
-        pwm_driver.set_pwm(x, pwm_convert(1500), pwm_convert(u_period-1500))
-    time.sleep(3)
+    duty = 1000000/pwm_freq
+    duty = float(u_secs) / float(duty)
+    duty = int(duty * 4096)
+    return duty
 
-def pwm_convert(x):
-    a = int(4096*pwm_freq*float(x)/1000000)
-    print(a)
-    return a
-
-# Sets the speed in uS, takes a number between 100 and -100
-# 100 is full speed forward
-# -100 is full speed reverse
-def set_speed(speed, channel):
-    final = speed * 4 + 1500
-    ramp(final, channel)
-    
-# Slowly ramp down the speed of motors
-# Final is the final value desired
-# Time is the time in seconds that ramp down will take (default 3)
-# step_p_sec is the amount of steps per second, default 20
-def ramp(final, channel, on_time=5, step_p_sec=20):
-    global pwm_speeds
+# Initialize ESCs, optionaly set frequency
+def esc_init():
     global pwm_freq
-    global pwm_driver
-    global u_period
-    # Set the PWM ramp steps
-    pwm_int = int(round(float(abs(pwm_speeds[channel] - final))*float(step_p_sec)/float((on_time*1000))))
-#    print(str(abs(pwm_speeds[channel]-final)) + "*" + str(step_p_sec) + "/" + str(on_time*1000) + "=" + str(pwm_int))
-    # Set the time interval
-    time_int = 1000/step_p_sec
-    print(time_int)
-    # Set the direction of the PWM steps
-    if pwm_speeds[channel] > final:
-        pwm_int = -pwm_int
-    print(pwm_int)
-    # Set the update time to 0 so it immediatley updates
-    updateTime = 0
-    while abs(pwm_speeds[channel] - final) > 10:
-        if time.time()*1000 - updateTime >= time_int:
-            # Get current PWM value
-            next_pwm = pwm_speeds[channel] + pwm_int
-            # Get time in milliseconds
-            updateTime = time.time()*1000
-            # Set pwm value
-            pwm_driver.set_pwm(channel, pwm_convert(next_pwm), pwm_convert(u_period-next_pwm))
-	    pwm_speeds[channel] = next_pwm
-            print(pwm_driver.get_pwm_on_time(1))
-            pwm_driver.set_pwm(channel, pwm_convert(final), pwm_convert(u_period - final))
+    global pwm
+    pwm.set_pwm_freq(pwm_freq)
+    for i in range(0, 7):
+        set_pulse(i, 1900)
+    sleep(5)
+    print("ESCs initialized")
 
-def stop_now(channel):
-    pwm_driver.setPWM(channel, 1500, 0)
-    pwm[channel] = 0
+# Set the pulse based on microseconds
+def set_pulse(channel, u_secs):
+    m_speed[channel] = u_secs
+    pwm.set_pwm(channel, u_to_duty(u_secs), 4096 - u_to_duty(u_secs))
 
-motor_init()
-print("PWM Initialized")
-#for i in range(1,8):
-#    print(i)
-#set_speed(50,1)
-#print("Speed set to " + str(50)  + "% of max")
-#time.sleep(2)
-#set_speed(0,1)
-print("Speed back to 0")
-i = 1400
-while i < 2048:
-    pwm_driver.set_pwm(1, i, 4096-i)
-    print(i)
-    i+=10
-    time.sleep(5)
+# Stop motors by channel
+def stop(channel):
+    if channel == 3:
+        set_pulse(0, 0)
+	set_pulse(1, 0)
+	set_pulse(2, 0)
+    elif channel < 3 and channel >= 0:
+	set_pulse(channel, 0)
+
+# Slowly move between two speeds
+def ramp(channel, u_final):
+    inc = 0
+    inc1 = 0
+    inc2 = 0
+    # Channel 3 will activate both rear motors
+    if(channel == 3):
+	if u_final == 0:
+	    stop(1)
+	    stop(2)
+        set_pulse(1, 0)
+	set_pulse(2, 0)
+	sleep(.5)
+        set_pulse(1, 1900)
+	set_pulse(2, 1900)
+	sleep(1)
+	m2_final = u_final
+	m1_final = 1900 - (u_final - 1900)
+	m1_done = False
+	m2_done = False
+        while True:
+            if m_speed[2] < m2_final:
+	        inc2 = 1
+	    else:
+	        inc2 = -1
+	    if m_speed[1] < m1_final:
+	        inc1 = 1
+	    else:
+                inc1 = -1
+	    if m1_done == False:
+	        set_pulse(1, m_speed[1] + inc1)
+		if abs(m_speed[1] - m1_final) < 10:
+		    set_pulse(1, m1_final)
+                    print("abs(" + str(m_speed[1]) + "-" + str(m1_final) + ")=" + str(abs(m_speed[1] - m1_final)))
+ 		    m1_done = True
+	    if m2_done == False:
+		set_pulse(2, m_speed[2] + inc2)
+		print("abs(" + str(m_speed[2]) + "-" + str(m2_final) + ")=" + str(abs(m_speed[2] - m2_final)))
+                if abs(m_speed[2] - m2_final) < 10:
+                    set_pulse(2, m2_final)
+		    m2_done = True
+	    sleep(.01)
+	    print("M1: " + str(m_speed[1]))
+	    print("M2: " + str(m_speed[2]))
+	    if m1_done and m2_done:
+		break
+    else:
+	if u_final == 0:
+	    stop(channel)
+	set_pulse(channel, 0)
+        sleep(.5)
+        set_pulse(channel, 1900)
+	sleep(1.5)
+	if channel == 2:
+	    u_final = -u_final
+        while abs(m_speed[channel] - u_final) > 5:
+            if u_final > m_speed[channel]:
+	        inc = 1
+            else:
+                inc = -1
+            set_pulse(channel, m_speed[channel] + inc)
+            print(m_speed[channel])
+            sleep(.01)
+        set_pulse(channel, u_final)
+    print("Done")
+
+# esc_init()
+
+"""
+pwm.set_pwm(1, 65535 - u_to_duty(1700), u_to_duty(1700))
+65535 - u_to_duty(time.sleep(5)
+pwm.set_pwm(1, 65535 - u_to_duty(1500), u_to_duty(1500))
+time.sleep(5)
+pwm.set_pwm(1, 65535 - u_to_duty(1350), u_to_duty(1350))
+time.sleep(5)
+pwm.set_pwm(1, 65535 - u_to_duty(1500), u_to_duty(1500))
+
+"""

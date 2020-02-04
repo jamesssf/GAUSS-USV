@@ -13,20 +13,22 @@ bus = SMBus(1)
 address = 0x68
 timer = 0;
 
+
+
 with SMBus(1) as bus:
     while timer<10:
-        zero = bus.read_i2c_block_data(address, 0, 2)
+        zero = bus.read_i2c_block_data(address, 0x0C, 2)
         print(zero)
-        one = bus.read_i2c_block_data(address, 1, 2)
+        one = bus.read_i2c_block_data(address, 6, 2)
         print(one)
         two = bus.read_i2c_block_data(address, 2, 2)
         print(two)
         print(" ")
-        x = bus.read_i2c_block_data(address, 3, 2)
+        x = bus.read_i2c_block_data(address, 79, 2)
         print(x)
-        y = bus.read_i2c_block_data(address, 5, 2)
+        y = bus.read_i2c_block_data(address, 81, 2)
         print(y)
-        z = bus.read_i2c_block_data(address, 7, 2)
+        z = bus.read_i2c_block_data(address, 83, 2)
         print(z)
         print(" ")
         time.sleep(2)

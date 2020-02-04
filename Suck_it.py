@@ -18,7 +18,7 @@ def suck_it(sample_counter):
         if flushed_flag:  # If the system is flushed...
             Relay.solenoid_on(sample_pin)  # Turn the specific solenoid on given by sample variable
             Relay.pump_on()
-            time.sleep(90)
+            time.sleep(95)
             while True:  # Monitor finished-pump which is updated by the water flow meter
                 if water_flow < 1:  # if the water flow drops below 1V <-------------------------------------------------- needs empirical evidence
                     Relay.all_relay_off()  # Turn off all the relays
