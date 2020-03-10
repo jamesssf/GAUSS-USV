@@ -13,6 +13,9 @@
 
 import RPi.GPIO as GPIO  # Import GPIO module for Raspberry Pi
 
+GPIO.setmode(GPIO.BCM)  # GPIO.BCM is using the numbers of GPIO
+
+
 flushPin = 22  # Relay connected to the solonoid for flushing the system
 pumpPin = 5  # Relay connected to the peristaltic pump
 pinList = [5, 6, 13, 17, 19, 22, 26, 27]  # Used for initializing the relays below

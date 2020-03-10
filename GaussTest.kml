@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document id="1WhTisDBJBPtFlqMYeXL2BuQa5d0v6UGO">
+	<name>GaussTest</name>
+	<gx:CascadingStyle kml:id="__managed_style_2C3CACC70F11DCA7344D">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>6</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_183FE8338911DCA7344D">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0ED68585A511DCA7344D">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_183FE8338911DCA7344D</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2C3CACC70F11DCA7344D</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="040175F82A11DCA73214">
+		<name>Untitled Path</name>
+		<LookAt>
+			<longitude>-122.4558334097173</longitude>
+			<latitude>47.19453739676452</latitude>
+			<altitude>92.18738295998928</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>84.61060291241665</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0ED68585A511DCA7344D</styleUrl>
+		<LineString>
+			<coordinates>
+				-122.4557156001051,47.19461758428921,92.18738861433893 -122.4557628518195,47.19421974415709,92.18048150158148 -122.4560762699946,47.19373645749454,92.18038416386914 -122.4568475916531,47.19387021290257,92.18045928735768 -122.4569962685908,47.19442449041858,92.18053197199239 -122.4571128425657,47.19507967277666,92.18048069947584 -122.4565422481153,47.19538821424942,92.18051150768866 -122.456148456538,47.19510697887862,92.18045726865441 -122.4557296860617,47.19459414452838,92.18738773159832 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

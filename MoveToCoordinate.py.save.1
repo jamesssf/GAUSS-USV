@@ -11,11 +11,11 @@ TargetRadius = 10                       #Target radius in meters for the moving 
 #state = 4                              #state = 4: Rear thrusters off and front thruster is turning GAUSS right
 #state = 5                              #state = 5: Rear thrusters off and front thruster is turning GAUSS left
 #state = 6
-forward_thrust = 1950
-reverse_thrust = 1850
-turn_right = 1950
-turn_left = 1850
-inc = 60
+forward_thrust = 2050
+reverse_thrust = 1750
+turn_right = 2050
+turn_left = 1750
+inc = 100
 gain = 2
 
 def Move(targetLat, targetLong):
@@ -34,13 +34,8 @@ def Move(targetLat, targetLong):
        print("target lat", targetLat)
        gaussHead = mag.get_head()
        goalHead = Dist.getGoalHeading(gaussLat, gaussLong, targetLat, targetLong)
-
        headDiff = gaussHead - goalHead
        HeadingError = abs(headDiff)
-       if HeadingError > 180:
-           HeadingError -= 360
-       elif HeadingError < -180:
-           HeadingError += 360
        print("Distance to goal: ", Dist.getGoalDistance(gaussLat, gaussLong, targetLat, targetLong)," Meters")
        print("Goal Heading: ",goalHead," deg")
        print("Gauss Heading: ",gaussHead,"deg")
@@ -48,8 +43,6 @@ def Move(targetLat, targetLong):
        sleep(.5)
        if HeadingError > 30:
             headMax = 30
-       else:
-            headMax = HeadingError
        if HeadingError < 10:
             state = 1
        elif HeadingError < 30:

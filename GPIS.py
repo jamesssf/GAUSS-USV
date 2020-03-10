@@ -6,7 +6,7 @@
 from smbus2 import SMBus
 import operator
 from time import sleep
-
+from functools import reduce
 
 # Address of MT33x (0x10)
 MT333x_ADDR = 0x10
@@ -132,7 +132,7 @@ class I2CGPS:
         configSentence += str(packetType)
 
         if len(dataField) > 0:
-            configSentence += dataField
+            configSentence += str(dataField)
 
         configSentence += "*" +  str(self.calcCRCforMTK(configSentence))
 

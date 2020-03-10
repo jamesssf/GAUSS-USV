@@ -37,74 +37,70 @@ def set_pulse(channel, u_secs):
 def stop(channel):
     if channel == 3:
         set_pulse(0, 0)
-        set_pulse(1, 0)
-        set_pulse(2, 0)
+	set_pulse(1, 0)
+	set_pulse(2, 0)
     elif channel < 3 and channel >= 0:
-        set_pulse(channel, 0)
+	set_pulse(channel, 0)
 
 # Slowly move between two speeds
-def ramp(channel, u_final):
+def ramp(channel,u_initial = None, u_final):
     inc = 0
     inc1 = 0
     inc2 = 0
     # Channel 3 will activate both rear motors
-    #if(m_speed[channel] == u_final):
-#	return
     if(channel == 3):
-        if u_final == 0:
-            stop(1)
-            stop(2)
-            return
-        if(m_speed[1] > 2200 or m_speed[2] > 2200 or m_speed[1] < 1600 or m_speed[2] < 1600):
-            set_pulse(1, 0)
-            set_pulse(2, 0)
-            sleep(.5)
-            set_pulse(1, 1900)
-            set_pulse(2, 1900)
-            sleep(1)
-
-        m2_final = u_final
-        m1_final = u_final
-        m1_done = False
-        m2_done = False
+	if u_final == 0:
+	    stop(1)
+	    stop(2)
+	if(m_speed[1]<1500 || m_speed[1] > 2200):
+	        set_pulse(1, 0)
+		set_pulse(2, 0)
+		sleep(.5)
+       		set_pulse(1, 1900)
+		set_pulse(2, 1900)
+		sleep(1)
+	m2_final = u_final
+	m1_final = 1900 - (u_final - 1900)
+	m1_done = False
+	m2_done = False
         while True:
             if m_speed[2] < m2_final:
-                inc2 = 1
-            else:
-                inc2 = -1
-            if m_speed[1] < m1_final:
-                inc1 = 1
-            else:
+	        inc2 = 1
+	    else:
+	        inc2 = -1
+	    if m_speed[1] < m1_final:
+	        inc1 = 1
+	    else:
                 inc1 = -1
-            if m1_done == False:
-                set_pulse(1, m_speed[1] + inc1)
-                if abs(m_speed[1] - m1_final) < 10:
-                    set_pulse(1, m1_final)
+	    if m1_done == False:
+	        set_pulse(1, m_speed[1] + inc1)
+		if abs(m_speed[1] - m1_final) < 10:
+		    set_pulse(1, m1_final)
                     print("abs(" + str(m_speed[1]) + "-" + str(m1_final) + ")=" + str(abs(m_speed[1] - m1_final)))
-                    m1_done = True
-            if m2_done == False:
-                set_pulse(2, m_speed[2] + inc2)
-                print("abs(" + str(m_speed[2]) + "-" + str(m2_final) + ")=" + str(abs(m_speed[2] - m2_final)))
+ 		    m1_done = True
+	    if m2_done == False:
+		set_pulse(2, m_speed[2] + inc2)
+		print("abs(" + str(m_speed[2]) + "-" + str(m2_final) + ")=" + str(abs(m_speed[2] - m2_final)))
                 if abs(m_speed[2] - m2_final) < 10:
                     set_pulse(2, m2_final)
-                    m2_done = True
-            sleep(.01)
-            print("M1: " + str(m_speed[1]))
-            print("M2: " + str(m_speed[2]))
-            if m1_done and m2_done:
-                break
+		    m2_done = True
+	    sleep(.01)
+	    print("M1: " + str(m_speed[1]))
+	    print("M2: " + str(m_speed[2]))
+	    if m1_done and m2_done:
+		break
     else:
-        if u_final == 0:
-            stop(channel)
-        print(channel)
-        if(m_speed[channel] < 1600 or m_speed[channel] > 2200):
-                set_pulse(channel, 0)
-                sleep(.5)
-                set_pulse(channel, 1900)
-                sleep(1.5)
+	if u_final == 0:
+	    stop(channel)
+	set_pulse(channel, 0)
+        sleep(.5)
+        set_pulse(channel, 1900)
+	sleep(1.5)
+	if channel == 2:
+	    u_final = -u_final
         while abs(m_speed[channel] - u_final) > 5:
             if u_final > m_speed[channel]:
-                inc = 1
+	        inc = 1
             else:
                 inc = -1
             set_pulse(channel, m_speed[channel] + inc)

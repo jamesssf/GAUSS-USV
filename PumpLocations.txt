@@ -1,0 +1,11 @@
+Number of Waypoints: **(not necessary) to enter, but needs a value**
+24
+Pump Waypoint One: 
+3
+Pump Waypoint Two: 
+20
+Pump Waypoint Three: 
+20
+Pump Waypoint Four: 
+20
+*

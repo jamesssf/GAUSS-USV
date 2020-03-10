@@ -1,0 +1,12 @@
+#James Cathey
+#Gauss USV
+#1/24/2020
+
+#This program translates information obtained from the .kml and .txt files uploaded by the user
+import GaussFileReader as read
+
+def dataTranslator():
+	Cordinate_Array = read.ReadKML()
+	PumpWaypointArray = read.ReadTXT()
+
+dataTranslator()
