@@ -13,7 +13,7 @@ import datetime
 trajectory_slope = 0
 trajectory_intercept = 0
 
- # Starting time
+# Starting time
 s_time = time.time()
 time_struct = datetime.datetime.now().timetuple()
 
@@ -27,7 +27,7 @@ waypoint_counter = -1
 next_waypoint = True
  
 # List of waypoints
-waypoints = [[47.194621,-122.455811],[47.194606, -122.455653]]
+waypoints = [[47.19402,-122.4573],[47.194606, -122.455653]]
  
 # Control variables
 distance_gain = 100
@@ -156,6 +156,7 @@ def control_loop(debug):
 #    speed = speed - abs(turn_speed)
 #    if speed < 0:
 #        speed = 0
+
     if debug:
         print("Latitude: " + str(position_now[0]) + " Longitude: " + str(position_now[1]))
         print("Goal Latitude: " + str(position_goal[0]) + " Goal Longitude: " + str(position_goal[1]))
@@ -173,4 +174,6 @@ def control_loop(debug):
     #Thrust.ramp(0, turn_speed + 1900)
     # Set the speed of the rear thruster based on the turn speed
     #Thrust.ramp(3, speed + 1900)
+    #Thrust.set_speed(turn_speed + 1900, speed + 1900, speed_1900)
+    #Thrust.set_speed(turn_speed + 1900, speed + 1900, speed_1900)
     time.sleep(.01)
