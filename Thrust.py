@@ -2,7 +2,7 @@ import Adafruit_PCA9685
 import time
 from time import sleep
 
-pwm = Adafruit_PCA9685.PCA9685()
+#pwm = Adafruit_PCA9685.PCA9685()
 
 # Don't change this!!
 pwm_freq = 60
@@ -22,10 +22,9 @@ def u_to_duty(u_secs):
 def esc_init():
     global pwm_freq
     global pwm
-    pwm.set_pwm_freq(pwm_freq)
-    for i in range(0, 7):
+    for i in range(0, 3):
         set_pulse(i, 1900)
-    sleep(5)
+    sleep(1)
     print("ESCs initialized")
 
 # Set the pulse based on microseconds
@@ -39,9 +38,48 @@ def stop(channel):
         set_pulse(0, 0)
         set_pulse(1, 0)
         set_pulse(2, 0)
-    elif channel < 3 and channel >= 0:
+    elif 0 <= channel <= 2:
         set_pulse(channel, 0)
 
+
+# Set speed of all three thrusters at once
+# Speed is a list of 3 numbers {Front Thruster, Back Left, Back Right}
+# 0 - Stop the thruster
+# -1 - Don't change the speed of the thruster
+def set_speed(speed):
+    # Don't increment if speed[i] is -1
+    done = [speed[0] < 0, speed[1] < 0, speed[2] < 0]
+    # Stop the motor if the speed in is 0
+    for i in range(0,3):
+        if speed[i] == 0:
+            speed[i] = 1900
+    # Reset the motor if it has been set higher or lower than the safe range
+    if not 2200 > m_speed[0] > 1600 or not 2200 > m_speed[1] > 1600 or not 2200 > m_speed[2] > 1600:
+        for i in range(0,3):
+            if m_speed[i] > 2200 or m_speed[i] < 1600:
+                # Reset motors
+                set_pulse(i, 1900)
+        sleep(1)
+    # Increment each motor a bit until they are all the right speed
+    while not all(done):
+        for i in range(0,3):
+            if not done[i]:
+                # Set the speed to the final speed if the current speed is within 10 us of the final speed
+                if abs(m_speed[i] - speed[i]) < 10:
+                    set_pulse(i, speed[i])
+                    done[i] = True
+                else:
+                    # Increase the speed if less than the final speed, decrease if speed is greater than final
+                    if m_speed[i] < speed[i]:
+                        inc = 1
+                    else:
+                        inc = -1
+                    set_pulse(i, m_speed[i] + inc)
+        print(str(m_speed[0]) + ":" + str(m_speed[1]) + ":" + str(m_speed[2]))
+        sleep(.01)
+
+############ WE MIGHT BE ABLE TO DELETE THIS NOW ##############
+############ SUPERSCEDED BY SET_SPEED #########################
 # Slowly move between two speeds
 def ramp(channel, u_final):
     inc = 0
@@ -112,16 +150,3 @@ def ramp(channel, u_final):
             sleep(.01)
         set_pulse(channel, u_final)
     print("Done")
-
-# esc_init()
-
-"""
-pwm.set_pwm(1, 65535 - u_to_duty(1700), u_to_duty(1700))
-65535 - u_to_duty(time.sleep(5)
-pwm.set_pwm(1, 65535 - u_to_duty(1500), u_to_duty(1500))
-time.sleep(5)
-pwm.set_pwm(1, 65535 - u_to_duty(1350), u_to_duty(1350))
-time.sleep(5)
-pwm.set_pwm(1, 65535 - u_to_duty(1500), u_to_duty(1500))
-
-"""
